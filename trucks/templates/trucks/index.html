@@ -1,0 +1,13 @@
+{% extends "base_generic.html" %}
+
+{% block content %}
+    {% if truck_list %}
+        <ul>
+        {% for truck in truck_list %}
+            <li><a href="{% url 'trucks:detail' truck.id %}">{{ truck }}</a></li>
+        {% endfor %}
+        </ul>
+    {% else %}
+        <p>No trucks are available.</p>
+    {% endif %}
+{% endblock %}

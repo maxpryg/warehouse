@@ -1,0 +1,7 @@
+{% extends "base_generic.html" %}
+
+{% block content %}
+    {% for handling_unit in handling_unit_list %}
+        <li><a href="{% url 'trucks:handling-unit-detail' truck_id handling_unit %}">{{ handling_unit }}</a></li>
+    {% endfor %}
+{% endblock %}

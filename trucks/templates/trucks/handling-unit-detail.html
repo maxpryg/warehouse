@@ -1,0 +1,23 @@
+{% extends "base_generic.html" %}
+
+{% block content %}
+    {% for entry in entries %}
+        <p>{{ entry }}</p>
+    {% endfor %}
+
+<form action="{% url 'trucks:add-truck' %}" method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    {{ formset.management_form }}
+    <table>
+    {% for form in formset %}
+        <tr>
+        {% for field in form %}
+            <td>{{ field }}</td>
+        {% endfor %}
+        </tr>
+    {% endfor %}
+    </table>
+    <input type="submit" value="Submit">
+</form>
+
+{% endblock %}

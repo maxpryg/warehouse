@@ -15,6 +15,7 @@ class Truck(models.Model):
         validators=[FileExtensionValidator(
             allowed_extensions=['xls', 'xlsx'],
             message='Supported file types are XLS and XLSX')])
+    checked = models.BooleanField(default=False)
 
     class Meta:
         ordering = ['-arrival_date']
@@ -32,9 +33,12 @@ class Entry(models.Model):
     quantity = models.IntegerField()
     weight = models.FloatField()
     handling_unit = models.IntegerField()
+    checked = models.BooleanField(default=False)
+    quantity_received = models.IntegerField(null=True)
 
     class Meta:
         verbose_name_plural = 'entries'
+        ordering = ['material']
 
     def __str__(self):
         return (f'{self.material} - {self.material_description} - '

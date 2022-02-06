@@ -4,7 +4,7 @@
     {% if truck_list %}
         <ul>
         {% for truck in truck_list %}
-            <li><a href="{% url 'trucks:detail' truck.id %}">{{ truck }}</a></li>
+            <li><a href="{% url 'trucks:truck-detail' truck.id %}">{{ truck }}</a></li>
         {% endfor %}
         </ul>
     {% else %}

@@ -1,28 +1,12 @@
 from django.shortcuts import render
-
-# Create your views here.
 from django.http import HttpResponse, HttpResponseRedirect
 from django.views import generic
 from django.shortcuts import get_list_or_404, render
 from django.urls import reverse
+from django.forms import modelformset_factory
 
 from .models import Truck, Entry
-from .forms import TruckForm
-
-
-def detail(request, pk):
-    """This view will be changed"""
-    #truck_entries = get_list_or_404(Entry, truck_id=pk)
-    handling_units = Entry.objects.filter(truck__id=pk).values(
-        'handling_unit').distinct()
-
-    handling_unit_list = []
-    for hu in handling_units:
-        handling_unit_list.append(hu['handling_unit'])
-
-    return render(
-        request, 'trucks/detail.html', {
-            'handling_unit_list': handling_unit_list})
+from .forms import TruckForm, EntryForm
 
 
 def results(request, truck_id):
@@ -85,3 +69,42 @@ def add_truck(request):
     else:
         form = TruckForm()
     return render(request, 'trucks/add_truck.html', {'form': form})
+
+
+def truck_detail(request, pk):
+    """Return a list of handling units of certain truck"""
+    handling_units = Entry.objects.filter(truck__id=pk).values(
+        'handling_unit').distinct()
+
+    handling_unit_list = []
+    for hu in handling_units:
+        handling_unit_list.append(hu['handling_unit'])
+
+    context = {'handling_unit_list': handling_unit_list, 'truck_id': pk}
+    return render(
+        request, 'trucks/truck-detail.html', context)
+
+
+#def handling_unit_detail(request, pk, hu):
+#    """Return list of entries of certain handling unit"""
+#    entries = Entry.objects.filter(
+#        truck__id=pk).filter(handling_unit__exact=hu)
+#    context = {'entries': entries}
+#    return render(request, 'trucks/handling-unit-detail.html', context)
+
+
+
+def handling_unit_detail(request, pk, hu):
+    EntryFormSet = modelformset_factory(Entry, fields=(
+        'material_description', 'material', 'quantity',
+            'quantity_received', 'checked'))
+    queryset = Entry.objects.filter(
+        truck__id=pk).filter(handling_unit__exact=hu)
+    if request.method == 'POST':
+        formset = EntryFormSet(request.POST, queryset=queryset)
+        if formset.is_valid():
+            pass
+    else:
+        formset = EntryFormSet(queryset=queryset)
+    return render(request, 'trucks/handling-unit-detail.html',
+        {'formset': formset})

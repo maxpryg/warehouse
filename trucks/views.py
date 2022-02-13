@@ -61,20 +61,14 @@ def add_truck(request):
 
 def truck_detail(request, pk):
     """Return a list of handling units of certain truck"""
-    checked_qty = Count('handling_unit', filter=Q(checked=True))
-    unchecked_qty = Entry.objects.filter(truck__id=pk).filter(
-        checked=False).count()
+    checked_true_qty = Count('handling_unit', filter=Q(checked=True))
+    total_checked_qty = Count('checked')
     handling_units = Entry.objects.filter(truck__id=pk).order_by(
-        'handling_unit').values_list(
-        'handling_unit', flat=True).distinct()
-    handling_units.annotate(checked_qty=checked_qty)
-#    total_entries = Entry.objects.filter(truck__id=pk).filter(
-#        handling_unit__exact=hu).count()
-#    checked_entries = Entry.objects.filter(truck__id=pk).filter(
-#        handling_unit__exact=hu).filter(checked=True).count()
-    context = {'handling_units': handling_units, 'truck_id': pk}
-    print(handling_units)
-    print(type(handling_units))
+        'handling_unit').values_list('handling_unit').annotate(
+        checked_true_qty=checked_true_qty).annotate(
+        total_checked_qty=total_checked_qty).distinct()
+    truck = Truck.objects.get(id=pk)
+    context = {'handling_units': handling_units, 'truck': truck}
     return render(
         request, 'trucks/truck-detail.html', context)
 
@@ -93,6 +87,7 @@ def handling_unit_detail(request, pk, hu):
                 if entry.id is None:
                     entry.truck = truck
                     entry.handling_unit = hu
+                    #entry.quantity = 0
                 entry.save()
             return HttpResponseRedirect(
                 reverse('trucks:truck-detail', args=[pk]))

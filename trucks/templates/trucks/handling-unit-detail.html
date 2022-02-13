@@ -1,4 +1,4 @@
-{% extends "base_generic.html" %}
+{% extends "base.html" %}
 
 {% block content %}
     {% for entry in entries %}
@@ -34,7 +34,7 @@
             </tr>
         </table>
     </div>
-    <input type="submit" value="Submit">
+    <button type="submit" class="btn btn-primary">Submit</button>
 </form>
 
 <script type="text/javascript">

@@ -1,8 +1,31 @@
-{% extends "base_generic.html" %}
+{% extends "base.html" %}
 
 {% block content %}
-    {{ handling_units|length }}
-    {% for handling_unit in handling_units %}
-        <li><a href="{% url 'trucks:handling-unit-detail' truck_id handling_unit %}">{{ handling_unit }}</a> - {{ handling_unit.checked_qty }}</li>
-    {% endfor %}
+    <h2>CW{{ truck.cw }} - Truck{{ truck.truck_number }}</h2>
+    <input type="text" id="search" placeholder="Search handling units">
+    <table id="handling_units">
+        {% for handling_unit in handling_units %}
+        <tr>
+            <td><a href="{% url 'trucks:handling-unit-detail' truck.id handling_unit.0 %}">{{ handling_unit.0 }}</a></td>
+            <td>{{ handling_unit.1 }} / {{ handling_unit.2 }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+
+<!-- We use jQuery to loop through each table rows to check if there are any
+text values that matches the value of the input field. The toggle() method
+hides the row (display:none) that does not match the search. We use the
+toLowerCase() DOM method to convert the text to lower case, which makes the
+search case insensitive -->
+<script>
+$(document).ready(function(){
+  $("#search").on("keyup", function() {
+    var value = $(this).val().toLowerCase();
+    $("#handling_units tr").filter(function() {
+      $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+    });
+  });
+});
+</script> 
+
 {% endblock %}

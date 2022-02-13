@@ -15,7 +15,6 @@ class Truck(models.Model):
         validators=[FileExtensionValidator(
             allowed_extensions=['xls', 'xlsx'],
             message='Supported file types are XLS and XLSX')])
-    checked = models.BooleanField(default=False)
 
     class Meta:
         ordering = ['-arrival_date']

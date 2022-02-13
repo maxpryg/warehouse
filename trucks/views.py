@@ -3,19 +3,11 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.views import generic
 from django.shortcuts import get_list_or_404, render
 from django.urls import reverse
-from django.forms import modelformset_factory
+from django.forms import modelformset_factory, formset_factory
+from django.db.models import Count, Q
 
 from .models import Truck, Entry
 from .forms import TruckForm, EntryForm
-
-
-def results(request, truck_id):
-    response = "You're looking at the results of truck %s."
-    return HttpResponse(response % truck_id)
-
-
-def vote(request, truck_id):
-    return HttpResponse("You're voting on truck %s." % truck_id)
 
 
 class TruckListView(generic.ListView):
@@ -27,18 +19,14 @@ class TruckListView(generic.ListView):
 def add_truck(request):
     """Process form that adds new Truck and it's specification(Entry instances)
         to database"""
-    """
-        TODO
-        Add try-except statement for catching errors while uploading a file
-        and saveing rows of that file to database.
-        If error, newly created truck must be deleted from database.
-    """
     if request.method == 'POST':
         form = TruckForm(request.POST, request.FILES)
 
         def add_truck_id(row):
             """Initializer function that adds ForeignKey(Truck) to Entry
             before it is saved to database"""
+            if row[0].startswith('Y'):
+                row[0] = row[0].partition('-')[2]
             row = [new_truck] + row
             return row
 
@@ -73,37 +61,41 @@ def add_truck(request):
 
 def truck_detail(request, pk):
     """Return a list of handling units of certain truck"""
-    handling_units = Entry.objects.filter(truck__id=pk).values(
-        'handling_unit').distinct()
-
-    handling_unit_list = []
-    for hu in handling_units:
-        handling_unit_list.append(hu['handling_unit'])
-
-    context = {'handling_unit_list': handling_unit_list, 'truck_id': pk}
+    checked_qty = Count('handling_unit', filter=Q(checked=True))
+    unchecked_qty = Entry.objects.filter(truck__id=pk).filter(
+        checked=False).count()
+    handling_units = Entry.objects.filter(truck__id=pk).order_by(
+        'handling_unit').values_list(
+        'handling_unit', flat=True).distinct()
+    handling_units.annotate(checked_qty=checked_qty)
+#    total_entries = Entry.objects.filter(truck__id=pk).filter(
+#        handling_unit__exact=hu).count()
+#    checked_entries = Entry.objects.filter(truck__id=pk).filter(
+#        handling_unit__exact=hu).filter(checked=True).count()
+    context = {'handling_units': handling_units, 'truck_id': pk}
+    print(handling_units)
+    print(type(handling_units))
     return render(
         request, 'trucks/truck-detail.html', context)
 
 
-#def handling_unit_detail(request, pk, hu):
-#    """Return list of entries of certain handling unit"""
-#    entries = Entry.objects.filter(
-#        truck__id=pk).filter(handling_unit__exact=hu)
-#    context = {'entries': entries}
-#    return render(request, 'trucks/handling-unit-detail.html', context)
-
-
-
 def handling_unit_detail(request, pk, hu):
-    EntryFormSet = modelformset_factory(Entry, fields=(
-        'material_description', 'material', 'quantity',
-            'quantity_received', 'checked'))
-    queryset = Entry.objects.filter(
-        truck__id=pk).filter(handling_unit__exact=hu)
+    EntryFormSet = modelformset_factory(Entry, form=EntryForm, extra=0)
+    queryset=Entry.objects.filter(truck__id=pk).filter(handling_unit__exact=hu)
     if request.method == 'POST':
-        formset = EntryFormSet(request.POST, queryset=queryset)
+        formset = EntryFormSet(request.POST, request.FILES, queryset=queryset)
+        truck = Truck.objects.get(id=pk)
         if formset.is_valid():
-            pass
+            #entries contain only forms, that were changed
+            entries = formset.save(commit=False)
+            for entry in entries:
+                #new forms added by user, will have entry.id None
+                if entry.id is None:
+                    entry.truck = truck
+                    entry.handling_unit = hu
+                entry.save()
+            return HttpResponseRedirect(
+                reverse('trucks:truck-detail', args=[pk]))
     else:
         formset = EntryFormSet(queryset=queryset)
     return render(request, 'trucks/handling-unit-detail.html',

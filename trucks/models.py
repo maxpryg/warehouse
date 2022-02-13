@@ -28,13 +28,13 @@ class Entry(models.Model):
     """Model for representing rows of specification.One instance for one row"""
     truck = models.ForeignKey(Truck, on_delete=models.CASCADE, null=True,
         blank=True)
-    material = models.CharField(max_length=20)
-    material_description = models.CharField(max_length=30)
+    material = models.CharField(max_length=10)
+    material_description = models.CharField(max_length=20)
     quantity = models.IntegerField()
-    weight = models.FloatField()
+    weight = models.FloatField(null=True)
     handling_unit = models.IntegerField()
     checked = models.BooleanField(default=False)
-    quantity_received = models.IntegerField(null=True)
+    quantity_received = models.IntegerField(null=True, blank=True)
 
     class Meta:
         verbose_name_plural = 'entries'

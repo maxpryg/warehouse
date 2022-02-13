@@ -17,29 +17,20 @@ class TruckForm(forms.ModelForm):
         }
 
 
-#class EntryForm(forms.ModelForm):
-#    class Meta:
-#        model = Entry
-#        fields = ('material_description', 'material', 'quantity', 'checked')
+class EntryForm(forms.ModelForm):
+    def __init__(self, *args, **kwargs):
+        super(EntryForm, self).__init__(*args, **kwargs)
+        self.fields['material_description'].widget.attrs.update({
+            'readonly': 'readonly',
+        })
+        self.fields['material'].widget.attrs.update({
+            'readonly': 'readonly',
+        })
+        self.fields['quantity'].widget.attrs.update({
+            'readonly': 'readonly',
+        })
 
-class TruckForm(forms.ModelForm):
-    """Base form for adding new truck instances"""
     class Meta:
-        model = Truck
-        fields = ('cw', 'truck_number', 'arrival_date', 'specification')
-        widgets = {
-            'arrival_date': DateInput(),
-        }
-
-
-#class EntryForm(forms.ModelForm):
-#    class Meta:
-#        model = Entry
-#        fields = ('material_description', 'material', 'quantity', 'checked')
-class EntryForm(forms.Form):
-    material_description = forms.CharField(max_length=20, disabled=True)
-    material = forms.CharField(max_length=10, disabled=True)
-    quantity = forms.IntegerField(disabled=True)
-    checked = forms.BooleanField(required=False)
-    quantity_received = forms.IntegerField()
-
+        model = Entry
+        fields = ('material_description', 'material', 'quantity', 'checked',
+            'quantity_received')

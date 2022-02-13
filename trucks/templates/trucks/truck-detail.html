@@ -1,7 +1,8 @@
 {% extends "base_generic.html" %}
 
 {% block content %}
-    {% for handling_unit in handling_unit_list %}
-        <li><a href="{% url 'trucks:handling-unit-detail' truck_id handling_unit %}">{{ handling_unit }}</a></li>
+    {{ handling_units|length }}
+    {% for handling_unit in handling_units %}
+        <li><a href="{% url 'trucks:handling-unit-detail' truck_id handling_unit %}">{{ handling_unit }}</a> - {{ handling_unit.checked_qty }}</li>
     {% endfor %}
 {% endblock %}

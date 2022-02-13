@@ -5,19 +5,44 @@
         <p>{{ entry }}</p>
     {% endfor %}
 
-<form action="{% url 'trucks:add-truck' %}" method="post" enctype="multipart/form-data">
+<form action="" method="post" enctype="multipart/form-data">
     {% csrf_token %}
     {{ formset.management_form }}
-    <table>
-    {% for form in formset %}
-        <tr>
-        {% for field in form %}
-            <td>{{ field }}</td>
+    <div>
+        <table id="form_set">
+        <th>Description</th>
+        <th>Article</th>
+        <th>Qty</th>
+        <th>Check</th>
+        <th>Actual</th>
+        {% for form in formset %}
+            <tr>
+            {% for field in form %}
+                <td>{{ field }}</td>
+            {% endfor %}
+            </tr>
         {% endfor %}
-        </tr>
-    {% endfor %}
-    </table>
+        </table>
+    </div>
+    <input type="button" value="Add More" id="add_more">
+    <div id="empty_form" style="display:none">
+        <table>
+            <tr>
+            {% for field in formset.empty_form %}
+                <td>{{ field }}</td>
+            {% endfor %}
+            </tr>
+        </table>
+    </div>
     <input type="submit" value="Submit">
 </form>
 
+<script type="text/javascript">
+$('#add_more').click(function() {
+	var form_idx = $('#id_form-TOTAL_FORMS').val();
+    $('#empty_form').find('input').removeAttr('readonly');
+	$('#form_set').find('tbody').append($('#empty_form').find('tbody').html().replace(/__prefix__/g, form_idx));
+	$('#id_form-TOTAL_FORMS').val(parseInt(form_idx) + 1);
+});
+</script>
 {% endblock %}

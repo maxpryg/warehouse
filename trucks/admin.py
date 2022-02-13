@@ -18,9 +18,9 @@ class TruckAdmin(admin.ModelAdmin):
 
 
 class EntryAdmin(admin.ModelAdmin):
-    list_display = ['truck', 'material', 'material_description', 'quantity',
-        'handling_unit']
-    list_filter = ['truck']
+    list_display = ['id', 'truck', 'material', 'material_description',
+        'quantity', 'handling_unit']
+    list_filter = ['truck', 'handling_unit']
     search_fields = ['material', 'handling_unit']
 
 

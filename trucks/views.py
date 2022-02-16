@@ -25,8 +25,17 @@ def add_truck(request):
         def add_truck_id(row):
             """Initializer function that adds ForeignKey(Truck) to Entry
             before it is saved to database"""
+            #remove unnecessary 'Y', at the start of material
             if row[0].startswith('Y'):
                 row[0] = row[0].partition('-')[2]
+            #cut the length of material and material description
+            #for some reasons, isave_to_database method allows to save strings
+            #longer than defined in Model definition
+            if len(row[0]) > 20:
+                row[0] =  row[0][:20]
+            if len(row[1]) > 50:
+                row[1] =  row[1][:50]
+            #add truck(ForeignKey) instance
             row = [new_truck] + row
             return row
 
@@ -91,6 +100,8 @@ def handling_unit_detail(request, pk, hu):
                 entry.save()
             return HttpResponseRedirect(
                 reverse('trucks:truck-detail', args=[pk]))
+        else:
+            print('INVALID')
     else:
         formset = EntryFormSet(queryset=queryset)
     return render(request, 'trucks/handling-unit-detail.html',

@@ -1,4 +1,5 @@
 from django import forms
+
 from .models import Truck, Entry
 
 
@@ -18,17 +19,17 @@ class TruckForm(forms.ModelForm):
 
 
 class EntryForm(forms.ModelForm):
-    def __init__(self, *args, **kwargs):
-        super(EntryForm, self).__init__(*args, **kwargs)
-        self.fields['material_description'].widget.attrs.update({
-            'readonly': 'readonly',
-        })
-        self.fields['material'].widget.attrs.update({
-            'readonly': 'readonly',
-        })
-        self.fields['quantity'].widget.attrs.update({
-            'readonly': 'readonly',
-        })
+#    def __init__(self, *args, **kwargs):
+#        super(EntryForm, self).__init__(*args, **kwargs)
+#        self.fields['material_description'].widget.attrs.update({
+#            'readonly': 'readonly',
+#        })
+#        self.fields['material'].widget.attrs.update({
+#            'readonly': 'readonly',
+#        })
+#        self.fields['quantity'].widget.attrs.update({
+#            'readonly': 'readonly',
+#        })
 
     class Meta:
         model = Entry

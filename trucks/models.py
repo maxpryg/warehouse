@@ -27,8 +27,8 @@ class Entry(models.Model):
     """Model for representing rows of specification.One instance for one row"""
     truck = models.ForeignKey(Truck, on_delete=models.CASCADE, null=True,
         blank=True)
-    material = models.CharField(max_length=10)
-    material_description = models.CharField(max_length=20)
+    material = models.CharField(max_length=20)
+    material_description = models.CharField(max_length=50)
     quantity = models.IntegerField()
     weight = models.FloatField(null=True)
     handling_unit = models.IntegerField()

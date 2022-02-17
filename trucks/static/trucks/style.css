@@ -1,0 +1,36 @@
+#form_set {
+  table-layout: fixed;
+  width: 100%;
+  white-space: nowrap;
+  font-size: 0.8rem;
+}
+
+/*
+#form_set td {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.row-desctiption {
+  width: 50%;
+}
+
+.row-material {
+  width: 20%;
+}
+
+.row-quantity {
+  width: 10%;
+}
+
+.row-checked {
+  width: 10%;
+}
+
+.row-actual {
+  width: 10%;
+}
+*/
+.hscroll {
+  overflow-x: auto; /* Horizontal */
+}

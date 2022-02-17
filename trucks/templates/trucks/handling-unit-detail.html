@@ -10,18 +10,22 @@
     {{ formset.management_form }}
     <div>
         <table id="form_set">
-        <th>Description</th>
-        <th>Article</th>
-        <th>Qty</th>
-        <th>Check</th>
-        <th>Actual</th>
-        {% for form in formset %}
-            <tr>
-            {% for field in form %}
-                <td>{{ field }}</td>
+            <thead>
+                <th class="row-description">Description</th>
+                <th class="row-material">Article</th>
+                <th class="row-quantity">Qty</th>
+                <th class="row-checked">Check</th>
+                <th class="row-actual">Actual</th>
+            </thead>
+            <tbody>
+            {% for form in formset %}
+                <tr>
+                {% for field in form %}
+                    <td>{{ field.errors }}{{ field }}</td>
+                {% endfor %}
+                </tr>
             {% endfor %}
-            </tr>
-        {% endfor %}
+            <tbody>
         </table>
     </div>
     <input type="button" value="Add More" id="add_more">

@@ -88,6 +88,7 @@ def handling_unit_detail(request, pk, hu):
     if request.method == 'POST':
         formset = EntryFormSet(request.POST, request.FILES, queryset=queryset)
         truck = Truck.objects.get(id=pk)
+        print(formset)
         if formset.is_valid():
             #entries contain only forms, that were changed
             entries = formset.save(commit=False)

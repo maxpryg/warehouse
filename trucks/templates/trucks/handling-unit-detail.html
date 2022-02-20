@@ -1,52 +1,65 @@
 {% extends "base.html" %}
 
 {% block content %}
-    {% for entry in entries %}
-        <p>{{ entry }}</p>
-    {% endfor %}
+  <div>
+    <input type="text" id="search" placeholder="Search">
+  </div>
 
-<form action="" method="post" enctype="multipart/form-data">
-    {% csrf_token %}
-    {{ formset.management_form }}
-    <div>
-        <table id="form_set">
-            <thead>
-                <th class="row-description">Description</th>
-                <th class="row-material">Article</th>
-                <th class="row-quantity">Qty</th>
-                <th class="row-checked">Check</th>
-                <th class="row-actual">Actual</th>
-            </thead>
-            <tbody>
-            {% for form in formset %}
-                <tr>
-                {% for field in form %}
-                    <td>{{ field.errors }}{{ field }}</td>
-                {% endfor %}
-                </tr>
-            {% endfor %}
-            <tbody>
-        </table>
+  <form method="post" enctype="multipart/form-data" class="needs-validation">
+  {% csrf_token %}
+  {{ formset.management_form }}
+    <div class="table-responsive-sm">
+      <table id="form_set" class="table table-sm table-striped table-hover w-auto">
+        <thead class="table-dark">
+          <tr>
+            <th scope="col">Description</th>
+            <th scope="col">Article</th>
+            <th scope="col">Qty</th>
+            <th scope="col">OK</th>
+            <th scope="col">Actual</th>
+          </tr>
+        </thead>
+        {% for form in formset %}
+        <tr class="form_row">
+          {% for field in form %}
+          <td>{{ field.errors }}{{ field }}</td>
+          {% endfor %}
+        </tr>
+        {% endfor %}
+      </table>
     </div>
     <input type="button" value="Add More" id="add_more">
-    <div id="empty_form" style="display:none">
-        <table>
-            <tr>
-            {% for field in formset.empty_form %}
-                <td>{{ field }}</td>
-            {% endfor %}
-            </tr>
-        </table>
-    </div>
     <button type="submit" class="btn btn-primary">Submit</button>
-</form>
+  </form>
+  <div id="empty_form" style="display:none">
+    <table>
+      <tr>
+        {% for field in formset.empty_form %}
+        <td>{{ field.errors }}{{ field }}</td>
+        {% endfor %}
+      </tr>
+    </table>
+  </div>
 
 <script type="text/javascript">
 $('#add_more').click(function() {
-	var form_idx = $('#id_form-TOTAL_FORMS').val();
-    $('#empty_form').find('input').removeAttr('readonly');
-	$('#form_set').find('tbody').append($('#empty_form').find('tbody').html().replace(/__prefix__/g, form_idx));
-	$('#id_form-TOTAL_FORMS').val(parseInt(form_idx) + 1);
-});
+  //total number of forms
+  var form_idx = $('#id_form-TOTAL_FORMS').val();
+
+  //remove readonly attributes
+  $('#id_form-__prefix__-material_description').removeAttr('readonly');
+  $('#id_form-__prefix__-material').removeAttr('readonly');
+
+  $('#id_form-__prefix__-material_description').prop('required', true);
+  $('#id_form-__prefix__-material').prop('required', true);
+  $('#id_form-__prefix__-quantity_received').prop('required', true);
+
+  //$('#id_form-__prefix__-quantity').removeAttr('readonly');
+  $('#form_set').find('tbody').append($('#empty_form').find('tbody').html().replace(/__prefix__/g, form_idx));
+  var qty_id = '#id_form-' + form_idx + '-quantity'
+  $(qty_id).val('0');
+  $('#id_form-TOTAL_FORMS').val(parseInt(form_idx) + 1);
+  });
+
 </script>
 {% endblock %}

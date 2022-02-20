@@ -1,31 +1,29 @@
 {% extends "base.html" %}
 
 {% block content %}
-    <h2>CW{{ truck.cw }} - Truck{{ truck.truck_number }}</h2>
-    <input type="text" id="search" placeholder="Search handling units">
-    <table id="handling_units">
-        {% for handling_unit in handling_units %}
-        <tr>
-            <td><a href="{% url 'trucks:handling-unit-detail' truck.id handling_unit.0 %}">{{ handling_unit.0 }}</a></td>
-            <td>{{ handling_unit.1 }} / {{ handling_unit.2 }}</td>
-        </tr>
-        {% endfor %}
-    </table>
+<h2 class="text-center text-primary">CW{{ truck.cw }} - Truck{{ truck.truck_number }}</h2>
+<div class="d-grid gap-2">
+  <input class="btn btn-outline-primary" type="number" id="search" placeholder="Search handling units">
+</div>
+<div class="table-responsive">
+  <table id="form_set" class="table table-sm table-hover">
+    {% for handling_unit in handling_units %}
+    <tr>
+      <td><a class="btn btn-outline-secondary btn-lg" href="{% url 'trucks:handling-unit-detail' truck.id handling_unit.0 %}">{{ handling_unit.0 }}</td>
+      <td><span id="checked_badge" class="badge bg-secondary rounded-pill">{{ handling_unit.1 }}</span></td>
+      <td><span id="total_badge" class="badge bg-success text-white rounded-pill">{{ handling_unit.2 }}</span></a></td>
+      <td><span id="claim_badge" class="badge bg-light rounded-pill">0</span></td>
+    </tr>
+    {% endfor %}
+  </table>
+</div>
 
-<!-- We use jQuery to loop through each table rows to check if there are any
-text values that matches the value of the input field. The toggle() method
-hides the row (display:none) that does not match the search. We use the
-toLowerCase() DOM method to convert the text to lower case, which makes the
-search case insensitive -->
-<script>
-$(document).ready(function(){
-  $("#search").on("keyup", function() {
-    var value = $(this).val().toLowerCase();
-    $("#handling_units tr").filter(function() {
-      $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
-    });
-  });
-});
-</script> 
-
+<script type="text/javascript">
+window.addEventListener("load", function() {
+  var checked_badge = $("#checked_badge");
+  var total_badge = $("#total_badge");
+  var claim_badge = $("#claim_badge");
+}
+</script>
 {% endblock %}
+

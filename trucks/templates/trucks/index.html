@@ -1,13 +1,13 @@
 {% extends "base.html" %}
 
 {% block content %}
-    {% if truck_list %}
-        <ul>
-        {% for truck in truck_list %}
-            <li><a href="{% url 'trucks:truck-detail' truck.id %}">{{ truck }}</a></li>
-        {% endfor %}
-        </ul>
-    {% else %}
-        <p>No trucks are available.</p>
-    {% endif %}
+  {% if truck_list %}
+  <div class="btn-group-vertical d-grid gap-2">
+    {% for truck in truck_list %}
+      <a class="fs-4 mt-2 btn btn-outline-primary" href="{% url 'trucks:truck-detail' truck.id %}">{{ truck }}</a>
+    {% endfor %}
+  {% else %}
+      <p>No trucks are available.</p>
+  </div>
+  {% endif %}
 {% endblock %}

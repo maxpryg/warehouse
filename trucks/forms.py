@@ -19,17 +19,29 @@ class TruckForm(forms.ModelForm):
 
 
 class EntryForm(forms.ModelForm):
-#    def __init__(self, *args, **kwargs):
-#        super(EntryForm, self).__init__(*args, **kwargs)
-#        self.fields['material_description'].widget.attrs.update({
-#            'readonly': 'readonly',
-#        })
-#        self.fields['material'].widget.attrs.update({
-#            'readonly': 'readonly',
-#        })
-#        self.fields['quantity'].widget.attrs.update({
-#            'readonly': 'readonly',
-#        })
+    def __init__(self, *args, **kwargs):
+        super(EntryForm, self).__init__(*args, **kwargs)
+        self.fields['material_description'].widget.attrs.update({
+            'readonly': 'readonly',
+            #'size':15,
+            'class': 'form-control form-control-sm form-control-plaintext',
+        })
+        self.fields['material'].widget.attrs.update({
+            'readonly': 'readonly',
+            #'size':8,
+            'class':'center-align',
+            'class': 'form-control form-control-sm',
+            'class': 'form-control form-control-sm form-control-plaintext',
+        })
+        self.fields['quantity'].widget.attrs.update({
+            'readonly': 'readonly',
+            'class': 'form-control form-control-sm',
+            'class': 'right-align form-control form-control-sm form-control-plaintext',
+        })
+        self.fields['quantity_received'].widget.attrs.update({
+            #'size':4,
+            'class': 'form-control form-control-sm',
+        })
 
     class Meta:
         model = Entry

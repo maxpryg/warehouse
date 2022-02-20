@@ -24,16 +24,16 @@ class EntryForm(forms.ModelForm):
         self.fields['material_description'].widget.attrs.update({
             'readonly': 'readonly',
             #'size':15,
-            'class': 'form-control form-control-sm form-control-plaintext text-end',
+            'class': 'form-control form-control-sm form-control-plaintext text-center',
         })
         self.fields['material'].widget.attrs.update({
             'readonly': 'readonly',
             #'size':8,
-            'class': 'form-control form-control-sm form-control-plaintext text-end',
+            'class': 'form-control form-control-sm form-control-plaintext text-center',
         })
         self.fields['quantity'].widget.attrs.update({
             'readonly': 'readonly',
-            'class': 'right-align form-control form-control-sm form-control-plaintext text-end',
+            'class': 'right-align form-control form-control-sm form-control-plaintext text-center',
         })
         self.fields['quantity_received'].widget.attrs.update({
             #'size':4,

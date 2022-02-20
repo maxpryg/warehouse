@@ -72,10 +72,12 @@ def truck_detail(request, pk):
     """Return a list of handling units of certain truck"""
     checked_true_qty = Count('handling_unit', filter=Q(checked=True))
     total_checked_qty = Count('checked')
+    claims = Count('handling_unit', filter=Q(quantity_received__gte=0))
     handling_units = Entry.objects.filter(truck__id=pk).order_by(
         'handling_unit').values_list('handling_unit').annotate(
         checked_true_qty=checked_true_qty).annotate(
-        total_checked_qty=total_checked_qty).distinct()
+        total_checked_qty=total_checked_qty).annotate(
+        claims=claims).distinct()
     truck = Truck.objects.get(id=pk)
     context = {'handling_units': handling_units, 'truck': truck}
     return render(
@@ -88,7 +90,6 @@ def handling_unit_detail(request, pk, hu):
     if request.method == 'POST':
         formset = EntryFormSet(request.POST, request.FILES, queryset=queryset)
         truck = Truck.objects.get(id=pk)
-        print(formset)
         if formset.is_valid():
             #entries contain only forms, that were changed
             entries = formset.save(commit=False)

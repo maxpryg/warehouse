@@ -12,7 +12,7 @@
       <td><a class="btn btn-outline-secondary btn-lg" href="{% url 'trucks:handling-unit-detail' truck.id handling_unit.0 %}">{{ handling_unit.0 }}</td>
       <td><span id="checked_badge" class="badge bg-secondary rounded-pill">{{ handling_unit.1 }}</span></td>
       <td><span id="total_badge" class="badge bg-info text-white rounded-pill">{{ handling_unit.2 }}</span></a></td>
-      <td><span id="claim_badge" class="badge bg-light rounded-pill">0</span></td>
+      <td><span id="claim_badge" class="badge bg-light rounded-pill">{{ handling_unit.3 }}</span></td>
     </tr>
     {% endfor %}
   </table>

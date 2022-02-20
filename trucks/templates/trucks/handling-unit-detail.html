@@ -1,15 +1,13 @@
 {% extends "base.html" %}
 
 {% block content %}
-  <div>
-    <input type="text" id="search" placeholder="Search">
-  </div>
-
   <form method="post" enctype="multipart/form-data" class="needs-validation">
   {% csrf_token %}
   {{ formset.management_form }}
-    <div class="table-responsive-sm">
-      <table id="form_set" class="table table-sm table-striped table-hover w-auto">
+    <div class="table-responsive-sm hscroll">
+      <table id="form_set" class="table table-sm table-striped table-hover caption-top">
+        <caption class="fs-3 text-center text-primary">{{ handling_unit }}</caption>
+<!--
         <thead class="table-dark">
           <tr>
             <th scope="col">Description</th>
@@ -19,8 +17,9 @@
             <th scope="col">Actual</th>
           </tr>
         </thead>
+-->
         {% for form in formset %}
-        <tr class="form_row">
+        <tr>
           {% for field in form %}
           <td>{{ field.errors }}{{ field }}</td>
           {% endfor %}

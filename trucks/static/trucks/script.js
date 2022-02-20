@@ -33,3 +33,22 @@ $(document).ready(function(){
     });
   });
 });
+
+window.addEventListener("load", function() {
+  $("#form_set tr").each(function(){
+    var checked_badge = $(this).find("#checked_badge");
+    var total_badge = $(this).find("#total_badge");
+    var claim_badge = $(this).find("#claim_badge");
+
+    if (checked_badge.text() === total_badge.text()) {
+      checked_badge.removeClass("bg-secondary");
+      checked_badge.addClass("bg-info");
+    }
+
+    if (parseInt(claim_badge.text(), 10) > 0) {
+      console.log("in IF");
+      claim_badge.removeClass("bg-light");
+      claim_badge.addClass("bg-danger");
+    }
+  });
+});

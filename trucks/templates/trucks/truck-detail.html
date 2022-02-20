@@ -11,7 +11,7 @@
     <tr>
       <td><a class="btn btn-outline-secondary btn-lg" href="{% url 'trucks:handling-unit-detail' truck.id handling_unit.0 %}">{{ handling_unit.0 }}</td>
       <td><span id="checked_badge" class="badge bg-secondary rounded-pill">{{ handling_unit.1 }}</span></td>
-      <td><span id="total_badge" class="badge bg-success text-white rounded-pill">{{ handling_unit.2 }}</span></a></td>
+      <td><span id="total_badge" class="badge bg-info text-white rounded-pill">{{ handling_unit.2 }}</span></a></td>
       <td><span id="claim_badge" class="badge bg-light rounded-pill">0</span></td>
     </tr>
     {% endfor %}
@@ -20,10 +20,23 @@
 
 <script type="text/javascript">
 window.addEventListener("load", function() {
-  var checked_badge = $("#checked_badge");
-  var total_badge = $("#total_badge");
-  var claim_badge = $("#claim_badge");
-}
+  $("#form_set tr").each(function(){
+    var checked_badge = $(this).find("#checked_badge");
+    var total_badge = $(this).find("#total_badge");
+    var claim_badge = $(this).find("#claim_badge");
+
+    if (checked_badge.text() === total_badge.text()) {
+      checked_badge.removeClass("bg-secondary");
+      checked_badge.addClass("bg-info");
+    }
+
+    if (parseInt(claim_badge.text(), 10) > 0) {
+      console.log("in IF");
+      claim_badge.removeClass("bg-light");
+      claim_badge.addClass("bg-danger");
+    }
+  });
+});
 </script>
 {% endblock %}
 

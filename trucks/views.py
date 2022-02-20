@@ -105,4 +105,4 @@ def handling_unit_detail(request, pk, hu):
     else:
         formset = EntryFormSet(queryset=queryset)
     return render(request, 'trucks/handling-unit-detail.html',
-        {'formset': formset})
+        {'formset': formset, 'handling_unit': hu})

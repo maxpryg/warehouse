@@ -1,7 +1,3 @@
-.center-align {
-  text-align: center;
-}
-
 /* Remove arrows from number inputs */
 input::-webkit-outer-spin-button,
 input::-webkit-inner-spin-button {
@@ -17,7 +13,6 @@ input[type=number] {
   table-layout: fixed;
   width: 100%;
   white-space: nowrap;
-  font-size: 0.8rem;
 }
 
 #form_set td {

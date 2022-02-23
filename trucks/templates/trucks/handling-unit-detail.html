@@ -5,23 +5,27 @@
   {% csrf_token %}
   {{ formset.management_form }}
     {% for form in formset %}
-    <div class="col-4">
-      {{ form.material_description }}
+    <div class="row gx-0">
+      <div class="col-12">
+        {{ form.material_description }}
+      </div>
     </div>
-    <div class="col-3">
-      {{ form.material }}
-    </div>
-    <div class="col-2">
-      {{ form.quantity }}
-    </div>
-    <div class="col-1">
-      {{ form.checked }}
-    </div>
-    <div class="col-2">
-      {{ form.quantity_received }}
-    </div>
-    <div class="d-none">
-      {{ form.id }}
+    <div class="row gx-0 bg-light">
+      <div class="col-6">
+        {{ form.material }}
+      </div>
+      <div class="col-2">
+        {{ form.quantity }}
+      </div>
+      <div class="col-1 position-relative">
+        {{ form.checked }}
+      </div>
+      <div class="col-3">
+        {{ form.quantity_received }}
+      </div>
+      <div class="d-none">
+        {{ form.id }}
+      </div>
     </div>
     {% endfor %}
 

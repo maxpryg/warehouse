@@ -8,38 +8,9 @@ input::-webkit-inner-spin-button {
 input[type=number] {
   -moz-appearance: textfield;
 }
-/*
-#form_set {
-  table-layout: fixed;
+
+.checkbox-100 {
   width: 100%;
-  white-space: nowrap;
+  height: 100%;
+  margin: 0;
 }
-
-#form_set td {
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-.row-desctiption {
-  width: 50%;
-}
-
-.row-material {
-  width: 20%;
-}
-
-.row-quantity {
-  width: 10%;
-}
-
-.row-checked {
-  width: 10%;
-}
-
-.row-actual {
-  width: 10%;
-}
-.hscroll {
-  overflow-x: auto; /* Horizontal
-}
-*/

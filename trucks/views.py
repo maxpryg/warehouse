@@ -12,7 +12,7 @@ from .forms import TruckForm, EntryForm
 
 class TruckListView(generic.ListView):
     model = Truck
-    template_name = 'trucks/index.html'
+    template_name = 'trucks/trucks.html'
     paginate_by = 10
 
 
@@ -65,7 +65,7 @@ def add_truck(request):
                 raise exc
     else:
         form = TruckForm()
-    return render(request, 'trucks/add_truck.html', {'form': form})
+    return render(request, 'trucks/add-truck.html', {'form': form})
 
 
 def truck_detail(request, pk):
@@ -108,3 +108,7 @@ def handling_unit_detail(request, pk, hu):
         formset = EntryFormSet(queryset=queryset)
     return render(request, 'trucks/handling-unit-detail.html',
         {'formset': formset, 'handling_unit': hu})
+
+
+def redirect_to_trucks(request):
+    return HttpResponseRedirect(reverse('trucks:trucks'))
